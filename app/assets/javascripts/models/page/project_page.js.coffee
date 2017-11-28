@@ -7,6 +7,7 @@
 #= require models/ui/feedback
 #= require models/ui/sitetour
 #= require models/ui/granules_list
+#= require models/ui/variable_list
 #= require modules/map/index
 
 data = @edsc.models.data
@@ -26,6 +27,7 @@ ns.ProjectPage = do (ko,
   FeedbackModel = ui.Feedback
   ajax=@edsc.util.xhr.ajax
   GranulesList = ui.GranulesList
+  VariableSelector = ui.VariableSelector
 ) ->
 
   $(document).ready ->
@@ -35,7 +37,6 @@ ns.ProjectPage = do (ko,
     constructor: ->
       @query = new QueryModel()
       @project = new ProjectModel(@query)
-      @projectQuery =
       @id = window.location.href.match(/\/projects\/(\d+)$/)?[1]
       @bindingsLoaded = ko.observable(false)
       @preferences = new PreferencesModel()
@@ -51,6 +52,7 @@ ns.ProjectPage = do (ko,
         projectList: projectList
         feedback: new FeedbackModel()
         sitetour: new SiteTourModel()
+        variableSelector: new VariableSelector(@project)
 
       $(window).on 'edsc.save_workspace', (e)=>
         urlUtil.saveState('/search/collections', urlUtil.currentParams(), true, @workspaceNameField())
